@@ -24,5 +24,18 @@ export const exampleThemeStorage: ThemeStorageType = {
         isLight: newTheme === 'light',
       };
     });
+
+    // Inject shake script into current active tab
+    try {
+      const [tab] = await chrome.tabs.query({ currentWindow: true, active: true });
+      if (tab.id && tab.url && !tab.url.startsWith('chrome://') && !tab.url.startsWith('about:')) {
+        await chrome.scripting.executeScript({
+          target: { tabId: tab.id },
+          files: ['shake.js'],
+        });
+      }
+    } catch (error) {
+      console.log('Failed to inject shake script:', error);
+    }
   },
 };
