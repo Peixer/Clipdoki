@@ -1,5 +1,10 @@
 
-# 📎 Clipdoki
+<div align="center">
+  <h1 align="center">
+    <img src="https://github.com/Peixer/Clipdoki/blob/main/clipdoki.png" width="200" />
+  </h1> 
+  <h3>◦ Clipdoki. Your AI Mentor.</h3>
+</div>
 
 ## 🧠 Problem
 Hackathons are intense, fast-paced, and exciting, but they can also be overwhelming, especially when working solo or with a team. Participants often struggle to manage time, maintain focus, and balance creativity with execution. Without a clear structure or timeline, many projects fail to reach a viable demo within the first 24 hours—the critical moment for impressing judges or collaborators.
