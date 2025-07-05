@@ -1,12 +1,12 @@
-import { pomodokiAuthStorage } from '@extension/storage';
+import { ClippyDokiAuthStorage } from '@extension/storage';
 import { Magic } from 'magic-sdk';
 import { createContext, useContext, useEffect, useState } from 'react';
-import type { PomodokiUser } from '@extension/storage';
+import type { ClippyDokiUser } from '@extension/storage';
 import type { ReactNode } from 'react';
 
 interface AuthContextType {
   isLoggedIn: boolean;
-  currentUser: PomodokiUser | null;
+  currentUser: ClippyDokiUser | null;
   loading: boolean;
   handleLogin: () => Promise<void>;
   handleLogout: () => Promise<void>;
@@ -21,7 +21,7 @@ interface AuthProviderProps {
 
 export const AuthProvider = ({ children }: AuthProviderProps) => {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
-  const [currentUser, setCurrentUser] = useState<PomodokiUser | null>(null);
+  const [currentUser, setCurrentUser] = useState<ClippyDokiUser | null>(null);
   const [loading, setLoading] = useState(true);
   const [magic, setMagic] = useState<Magic | null>(null);
 
@@ -38,14 +38,14 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
         if (isLoggedIn) {
           const userInfo = await magicInstance.user.getInfo();
           console.log('userInfo', userInfo);
-          const user: PomodokiUser = {
+          const user: ClippyDokiUser = {
             id: userInfo.publicAddress || '1',
             email: userInfo.email || '',
             name: userInfo.email?.split('@')[0] || 'User',
             isLoggedIn: true,
           };
 
-          await pomodokiAuthStorage.login(user);
+          await ClippyDokiAuthStorage.login(user);
           setCurrentUser(user);
           setIsLoggedIn(true);
         }
@@ -63,7 +63,7 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
   useEffect(() => {
     const checkAuth = async () => {
       try {
-        const authState = await pomodokiAuthStorage.get();
+        const authState = await ClippyDokiAuthStorage.get();
         setIsLoggedIn(authState.isAuthenticated);
         setCurrentUser(authState.user);
       } catch (error) {
@@ -74,7 +74,7 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
 
     checkAuth();
 
-    const unsubscribe = pomodokiAuthStorage.subscribe(() => {
+    const unsubscribe = ClippyDokiAuthStorage.subscribe(() => {
       checkAuth();
     });
 
@@ -93,14 +93,14 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
       const userInfo = await magic.user.getInfo();
       console.log('userInfo', userInfo);
 
-      const user: PomodokiUser = {
+      const user: ClippyDokiUser = {
         id: userInfo.publicAddress || '1',
         email: userInfo.email || '',
         name: userInfo.email?.split('@')[0] || 'User',
         isLoggedIn: true,
       };
 
-      await pomodokiAuthStorage.login(user);
+      await ClippyDokiAuthStorage.login(user);
       setCurrentUser(user);
       setIsLoggedIn(true);
     } catch (error) {
@@ -120,7 +120,7 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
     try {
       setLoading(true);
       await magic.user.logout();
-      await pomodokiAuthStorage.logout();
+      await ClippyDokiAuthStorage.logout();
       setCurrentUser(null);
       setIsLoggedIn(false);
     } catch (error) {

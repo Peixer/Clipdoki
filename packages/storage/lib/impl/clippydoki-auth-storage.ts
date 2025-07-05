@@ -1,26 +1,26 @@
 import { createStorage, StorageEnum } from '../base/index.js';
 import type { BaseStorageType } from '../base/index.js';
 
-interface PomodokiUser {
+interface ClippyDokiUser {
   id: string;
   email: string;
   name: string;
   isLoggedIn: boolean;
 }
 
-interface PomodokiAuthState {
-  user: PomodokiUser | null;
+interface ClippyDokiAuthState {
+  user: ClippyDokiUser | null;
   isAuthenticated: boolean;
 }
 
-type PomodokiAuthStorageType = BaseStorageType<PomodokiAuthState> & {
-  login: (user: Omit<PomodokiUser, 'isLoggedIn'>) => Promise<void>;
+type ClippyDokiAuthStorageType = BaseStorageType<ClippyDokiAuthState> & {
+  login: (user: Omit<ClippyDokiUser, 'isLoggedIn'>) => Promise<void>;
   logout: () => Promise<void>;
   checkAuth: () => Promise<boolean>;
 };
 
-const storage = createStorage<PomodokiAuthState>(
-  'pomodokiState',
+const storage = createStorage<ClippyDokiAuthState>(
+  'ClippyDokiState',
   {
     user: null,
     isAuthenticated: false,
@@ -31,10 +31,10 @@ const storage = createStorage<PomodokiAuthState>(
   },
 );
 
-const pomodokiAuthStorage: PomodokiAuthStorageType = {
+const ClippyDokiAuthStorage: ClippyDokiAuthStorageType = {
   ...storage,
-  login: async (userData: Omit<PomodokiUser, 'isLoggedIn'>) => {
-    const user: PomodokiUser = {
+  login: async (userData: Omit<ClippyDokiUser, 'isLoggedIn'>) => {
+    const user: ClippyDokiUser = {
       ...userData,
       isLoggedIn: true,
     };
@@ -56,5 +56,5 @@ const pomodokiAuthStorage: PomodokiAuthStorageType = {
   },
 };
 
-export { pomodokiAuthStorage };
-export type { PomodokiUser, PomodokiAuthState, PomodokiAuthStorageType };
+export { ClippyDokiAuthStorage };
+export type { ClippyDokiUser, ClippyDokiAuthState, ClippyDokiAuthStorageType };

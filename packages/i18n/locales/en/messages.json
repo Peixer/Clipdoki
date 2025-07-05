@@ -42,8 +42,8 @@
   "displayErrorReset": {
     "message": "Run Again"
   },
-  "welcomeToPomodoki": {
-    "message": "Welcome to Pomodoki"
+  "welcomeToClippyDoki": {
+    "message": "Welcome to ClippyDoki"
   },
   "pleaseSignIn": {
     "message": "Please sign in to continue"
