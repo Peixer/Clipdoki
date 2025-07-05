@@ -23,7 +23,9 @@
     "@extension/shared": "workspace:*",
     "@extension/storage": "workspace:*",
     "@extension/i18n": "workspace:*",
-    "@extension/ui": "workspace:*"
+    "@magic-ext/flow": "^24.1.0",
+    "@extension/ui": "workspace:*", 
+    "magic-sdk": "^29.1.0"
   },
   "devDependencies": {
     "@extension/tailwindcss-config": "workspace:*",

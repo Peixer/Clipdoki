@@ -41,5 +41,32 @@
   },
   "displayErrorReset": {
     "message": "Run Again"
+  },
+  "welcomeToPomodoki": {
+    "message": "Welcome to Pomodoki"
+  },
+  "pleaseSignIn": {
+    "message": "Please sign in to continue"
+  },
+  "emailAddress": {
+    "message": "Email address"
+  },
+  "password": {
+    "message": "Password"
+  },
+  "signIn": {
+    "message": "Sign in"
+  },
+  "signingIn": {
+    "message": "Signing in..."
+  },
+  "logout": {
+    "message": "Logout"
+  },
+  "welcomeUser": {
+    "message": "Welcome, !"
+  },
+  "demoLoginNote": {
+    "message": "Demo: Use any email and password to login"
   }
 }

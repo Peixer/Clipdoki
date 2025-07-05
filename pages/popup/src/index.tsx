@@ -1,4 +1,5 @@
 import '@src/index.css';
+import { AuthProvider } from '@src/context/AuthContext';
 import Popup from '@src/Popup';
 import { createRoot } from 'react-dom/client';
 
@@ -9,7 +10,11 @@ const init = () => {
   }
   const root = createRoot(appContainer);
 
-  root.render(<Popup />);
+  root.render(
+    <AuthProvider>
+      <Popup />
+    </AuthProvider>,
+  );
 };
 
 init();
