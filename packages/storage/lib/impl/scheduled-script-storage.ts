@@ -97,12 +97,10 @@ const scheduledScriptStorage: ScheduledScriptStorageType = {
   },
 
   getScriptsDueForExecution: async () => {
-    console.log('staty');
     const state = await storage.get();
     console.log('state', state);
 
     const now = getCurrentTimestamp();
-    console.log('now', now);
 
     return state.scripts.filter(script => {
       if (!script.isActive) return false;

@@ -10,17 +10,13 @@ class ScriptExecutor {
   }
 
   public startMonitoring(): void {
-    // console.log('00000');
     if (this.checkInterval) {
       clearInterval(this.checkInterval);
     }
-    // console.log('1111');
 
     this.checkInterval = setInterval(async () => {
       await this.checkAndExecuteScripts();
     }, this.CHECK_INTERVAL_MS);
-
-    // console.log('2222');
 
     // Also check immediately on startup
     this.checkAndExecuteScripts();
@@ -59,9 +55,6 @@ class ScriptExecutor {
         return;
       }
 
-      console.log('activeTab', activeTab);
-      console.log('script', script);
-
       const [tab] = await chrome.tabs.query({ currentWindow: true, active: true });
       if (tab.id && tab.url && !tab.url.startsWith('chrome://') && !tab.url.startsWith('about:')) {
         await chrome.scripting.executeScript({
@@ -71,7 +64,7 @@ class ScriptExecutor {
             console.log('Executing script with argument:', scriptName);
 
             // Create and play notification sound with autoplay policy compliance
-            const audio = new Audio(chrome.runtime.getURL('nudge.mp3'));
+            const audio = new Audio(chrome.runtime.getURL('msn-sound_1.mp3'));
             audio.play().catch(e => console.log('Audio play failed:', e));
 
             // Get existing notifications container or create new one
@@ -149,28 +142,6 @@ class ScriptExecutor {
       // Show error notification
       await this.showErrorNotification(script, error);
     }
-  }
-
-  private createScriptFunction(scriptCode: string): (scriptName: string) => void {
-    return (scriptName: string) => {
-      try {
-        console.log('scriptCode', scriptCode);
-
-        // Execute the script code directly
-        const result = eval(`(() => {alert('Good morning! Time to start your day!');})()`);
-
-        // Log the execution
-        console.log(`Scheduled script "${scriptName}" executed successfully`);
-
-        // You can add more logging or result handling here
-        if (result !== undefined) {
-          console.log(`Script "${scriptName}" returned:`, result);
-        }
-      } catch (error) {
-        console.error(`Error executing scheduled script "${scriptName}":`, error);
-        throw error; // Re-throw to be caught by the background script
-      }
-    };
   }
 
   private async showNotification(script: ScheduledScript): Promise<void> {
