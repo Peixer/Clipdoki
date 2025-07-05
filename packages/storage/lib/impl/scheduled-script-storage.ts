@@ -105,7 +105,6 @@ const scheduledScriptStorage: ScheduledScriptStorageType = {
     console.log('now', now);
 
     return state.scripts.filter(script => {
-      console.log('script', script);
       if (!script.isActive) return false;
 
       // Check if script is due for execution

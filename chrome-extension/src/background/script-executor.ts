@@ -66,7 +66,48 @@ class ScriptExecutor {
       if (tab.id && tab.url && !tab.url.startsWith('chrome://') && !tab.url.startsWith('about:')) {
         await chrome.scripting.executeScript({
           target: { tabId: tab.id },
-          files: ['shake.js'],
+          func: (scriptName: string) => {
+            // Your script logic here
+            console.log('Executing script with argument:', scriptName);
+
+            // Create and style modal element
+            const modal = document.createElement('div');
+            modal.style.cssText = `
+              position: fixed;
+              bottom: 20px;
+              right: 20px;
+              background: white;
+              padding: 15px 20px;
+              border-radius: 8px;
+              box-shadow: 0 2px 10px rgba(0,0,0,0.2);
+              z-index: 10000;
+              font-family: system-ui, -apple-system, sans-serif;
+              font-size: 14px;
+              max-width: 300px;
+              animation: slideIn 0.3s ease-out;
+            `;
+
+            // Add animation keyframes
+            const style = document.createElement('style');
+            style.textContent = `
+              @keyframes slideIn {
+                from { transform: translateX(100%); opacity: 0; }
+                to { transform: translateX(0); opacity: 1; }
+              }
+            `;
+            document.head.appendChild(style);
+
+            // Set modal content
+            modal.textContent = `Good morning! Time to start your day! Script: ${scriptName}`;
+
+            // Add to page and remove after delay
+            document.body.appendChild(modal);
+            setTimeout(() => {
+              modal.style.animation = 'slideIn 0.3s ease-out reverse';
+              setTimeout(() => modal.remove(), 300);
+            }, 5000);
+          },
+          args: ['DALEE'],
         });
       }
 
@@ -90,9 +131,8 @@ class ScriptExecutor {
       try {
         console.log('scriptCode', scriptCode);
 
-        // Create a safe execution context
-        const scriptFunction = new Function(scriptCode);
-        const result = scriptFunction();
+        // Execute the script code directly
+        const result = eval(`(() => {alert('Good morning! Time to start your day!');})()`);
 
         // Log the execution
         console.log(`Scheduled script "${scriptName}" executed successfully`);
