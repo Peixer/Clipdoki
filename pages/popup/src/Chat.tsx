@@ -1,4 +1,4 @@
-import { useStorage } from '@extension/shared';
+import { useStorage } from '@extension/shared/lib/hooks/use-storage';
 import { exampleThemeStorage } from '@extension/storage';
 import { cn } from '@extension/ui';
 import { useState, useEffect, useRef } from 'react';
@@ -11,92 +11,32 @@ interface Message {
   timestamp: Date;
 }
 
+// Novo prompt de sistema
+const SYSTEM_PROMPT = `\nVocê é o ClippyDoki, um assistente de hackathon no estilo MSN.\nSeu objetivo é guiar participantes por um plano de desenvolvimento bem estruturado para hackathons de 36h.\nGaranta que o projeto atinja um "minimum viable demo" em até 24h, dividindo o processo em três fases:\n\nFASE 1 - BRAINSTORM (2h):\n- Explique o conceito das 24h e a importância de ser simples\n- Foque no usuário e experiência\n- Dê direção clara sobre o que fazer durante essas 2h\n- Quando a pessoa voltar, ajude a organizar tudo que foi pensado\n\nCOMMITMENT CHECK:\n- ANTES de começar a Fase 2, pergunte se a pessoa aceita fazer o compromisso de cumprir todas as fases\n- Só prossiga para Fase 2 após confirmação explícita do compromisso\n- Explique a importância do compromisso para o sucesso do hackathon\n\nFASE 2 - EXECUÇÃO (20h):\n- Receba o resumo do que foi decidido no brainstorm\n- Ajude a organizar as tarefas e prioridades\n- Mantenha o foco na execução\n\nFASE 3 - POLISH & DEMO (14h):\n- Prepare o storytelling e apresentação\n\nIMPORTANTE: Seja estruturado e direcional. Na Fase 1, explique o processo, dê direção clara, e quando a pessoa voltar, ajude a organizar. SEMPRE faça o commitment check antes da Fase 2. Na Fase 2, seja prático e focado em execução. Sempre sugira tarefas específicas e mantenha o foco em shipping rápido. Seja divertido, nostálgico, mas prático. Use emojis vintage e referências dos anos 2000.\n`;
+
+// Classic MSN emoticons
+const emoticons = [
+  '☺', '☻', '♥', '♦', '♣', '♠', '•', '◘', '○', '◙',
+  '♂', '♀', '♪', '♫', '☼', '►', '◄', '↕', '‼', '¶', '§',
+  '▬', '↨', '↑', '↓', '→', '←', '∟', '↔', '▲', '▼',
+];
+
 const Chat = () => {
   const { isLight } = useStorage(exampleThemeStorage);
   const [messages, setMessages] = useState<Message[]>([
     {
       id: '1',
-      content: 'Hey! How are you doing today? :)',
+      content: 'Olá! Qual a ideia do seu projeto para o hackathon? 😃',
       isSent: false,
-      timestamp: new Date(Date.now() - 60000),
-    },
-    {
-      id: '2',
-      content: "Hi! I'm doing great, thanks for asking! How about you?",
-      isSent: true,
-      timestamp: new Date(Date.now() - 45000),
-    },
-    {
-      id: '3',
-      content: 'Pretty good! Just working on some projects. Want to chat?',
-      isSent: false,
-      timestamp: new Date(Date.now() - 30000),
+      timestamp: new Date(),
     },
   ]);
   const [inputMessage, setInputMessage] = useState('');
   const [isTyping, setIsTyping] = useState(false);
   const [isShaking, setIsShaking] = useState(false);
+  const [openAiKey, setOpenAiKey] = useState('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');
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const inputRef = useRef<HTMLInputElement>(null);
-
-  // Sample responses for the AI friend (vintage style)
-  const responses = [
-    "That's cool! Tell me more about it.",
-    'Haha, I know what you mean! :)',
-    "Really? That's awesome!",
-    "I'm not sure I understand, can you explain?",
-    'That sounds like fun!',
-    "Oh wow, that's cool!",
-    'I agree with you on that one!',
-    'Thanks for sharing that with me!',
-    "That's a good point!",
-    "I'm glad you told me that!",
-    "LOL! That's funny!",
-    'OMG, really?',
-    "That's so true!",
-    'I totally get what you mean!',
-    "That's interesting!",
-    'Cool beans!',
-    "That's wicked!",
-    "I'm with you on that!",
-    "That's the bomb!",
-    'Sweet! Tell me more!',
-  ];
-
-  // Classic MSN emoticons
-  const emoticons = [
-    '☺',
-    '☻',
-    '♥',
-    '♦',
-    '♣',
-    '♠',
-    '•',
-    '◘',
-    '○',
-    '◙',
-    '♂',
-    '♀',
-    '♪',
-    '♫',
-    '☼',
-    '►',
-    '◄',
-    '↕',
-    '‼',
-    '¶',
-    '§',
-    '▬',
-    '↨',
-    '↑',
-    '↓',
-    '→',
-    '←',
-    '∟',
-    '↔',
-    '▲',
-    '▼',
-  ];
 
   const scrollToBottom = () => {
     messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
@@ -116,24 +56,47 @@ const Chat = () => {
     setMessages(prev => [...prev, newMessage]);
   };
 
-  const sendMessage = () => {
+  const sendMessage = async () => {
     const message = inputMessage.trim();
-    if (message) {
-      addMessage(message, true);
-      setInputMessage('');
+    if (!message) return;
+    addMessage(message, true);
+    setInputMessage('');
+    setIsTyping(true);
 
-      // Show typing indicator
-      setIsTyping(true);
+    // Montar histórico para OpenAI alternando user/assistant
+    const openaiHistory = [
+      { role: 'system', content: SYSTEM_PROMPT },
+      ...messages.map(m => ({
+        role: m.isSent ? 'user' : 'assistant',
+        content: m.content,
+      })),
+      { role: 'user', content: message },
+    ];
 
-      // Simulate AI response after a delay
-      setTimeout(
-        () => {
-          setIsTyping(false);
-          const randomResponse = responses[Math.floor(Math.random() * responses.length)];
-          addMessage(randomResponse, false);
+    try {
+      const response = await fetch('https://api.openai.com/v1/chat/completions', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${openAiKey}`,
         },
-        1500 + Math.random() * 2000,
-      );
+        body: JSON.stringify({
+          model: 'gpt-3.5-turbo',
+          messages: openaiHistory,
+          max_tokens: 180,
+          temperature: 0.8,
+        }),
+      });
+      const data = await response.json();
+      setIsTyping(false);
+      if (data.choices && data.choices[0] && data.choices[0].message) {
+        addMessage(data.choices[0].message.content, false);
+      } else {
+        addMessage('Desculpe, não consegui responder agora. 😅', false);
+      }
+    } catch (e) {
+      setIsTyping(false);
+      addMessage('Erro ao conectar à OpenAI. Verifique sua chave e tente novamente.', false);
     }
   };
 
@@ -185,6 +148,8 @@ const Chat = () => {
         isLight ? 'bg-[#ECE9D8]' : 'bg-gray-800',
         !isLight && 'dark',
       )}>
+      {/* Campo para a chave da OpenAI */}
+    
       {/* Title Bar */}
       <div
         className={cn(
