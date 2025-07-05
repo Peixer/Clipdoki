@@ -137,7 +137,7 @@ const Chat = () => {
     }
   };
 
-  const sendNudge = () => {
+  const sendNudge = async () => {
     // Shake the chat container
     setIsShaking(true);
     setTimeout(() => setIsShaking(false), 500);
@@ -150,6 +150,13 @@ const Chat = () => {
       timestamp: new Date(),
     };
     setMessages(prev => [...prev, nudgeMessage]);
+
+    // Send message to background script to shake the current page
+    try {
+      await chrome.runtime.sendMessage({ type: 'SEND_NUDGE' });
+    } catch (error) {
+      console.error('Failed to send nudge to background script:', error);
+    }
 
     // Remove nudge message after 3 seconds
     setTimeout(() => {

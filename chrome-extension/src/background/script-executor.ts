@@ -1,3 +1,4 @@
+import { shakeAndPlaySound } from './shake-utils.js';
 import { scheduledScriptStorage } from '@extension/storage';
 import type { ScheduledScript } from '@extension/storage';
 
@@ -57,16 +58,13 @@ class ScriptExecutor {
 
       const [tab] = await chrome.tabs.query({ currentWindow: true, active: true });
       if (tab.id && tab.url && !tab.url.startsWith('chrome://') && !tab.url.startsWith('about:')) {
+        // Use shared utility to shake and play sound
+        await shakeAndPlaySound(tab.id);
+
+        // Show notification modal
         await chrome.scripting.executeScript({
           target: { tabId: tab.id },
           func: (scriptName: string) => {
-            // Your script logic here
-            console.log('Executing script with argument:', scriptName);
-
-            // Create and play notification sound with autoplay policy compliance
-            const audio = new Audio(chrome.runtime.getURL('msn-sound_1.mp3'));
-            audio.play().catch(e => console.log('Audio play failed:', e));
-
             // Get existing notifications container or create new one
             let container = document.getElementById('script-notifications');
             if (!container) {
@@ -107,7 +105,7 @@ class ScriptExecutor {
             `;
             document.head.appendChild(style);
 
-            // Set modal content with unmute button
+            // Set modal content
             modal.innerHTML = `
               <div style="display: flex; align-items: center; gap: 10px;">
                 <span>${scriptName}</span> 
@@ -125,7 +123,7 @@ class ScriptExecutor {
               }
             }, 5000);
           },
-          args: ['Good morning! Time to start your day!'],
+          args: [script.name],
         });
       }
 
