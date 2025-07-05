@@ -42,8 +42,8 @@
   "displayErrorReset": {
     "message": "Run Again"
   },
-  "welcomeToClippyDoki": {
-    "message": "Welcome to ClippyDoki"
+  "welcomeToClipdoki": {
+    "message": "Welcome to Clipdoki"
   },
   "pleaseSignIn": {
     "message": "Please sign in to continue"

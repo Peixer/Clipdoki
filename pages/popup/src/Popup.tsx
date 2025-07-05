@@ -94,7 +94,7 @@ const PopupContent = () => {
             isLight ? 'bg-green-200 text-black' : 'bg-green-700 text-white',
           )}
           onClick={() => setShowChat(true)}>
-          💬 Chat with ClippyDoki
+          💬 Chat with Clipdoki
         </button>
       </header>
     </div>

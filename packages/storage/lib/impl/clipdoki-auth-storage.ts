@@ -1,26 +1,26 @@
 import { createStorage, StorageEnum } from '../base/index.js';
 import type { BaseStorageType } from '../base/index.js';
 
-interface ClippyDokiUser {
+interface ClipdokiUser {
   id: string;
   email: string;
   name: string;
   isLoggedIn: boolean;
 }
 
-interface ClippyDokiAuthState {
-  user: ClippyDokiUser | null;
+interface ClipdokiAuthState {
+  user: ClipdokiUser | null;
   isAuthenticated: boolean;
 }
 
-type ClippyDokiAuthStorageType = BaseStorageType<ClippyDokiAuthState> & {
-  login: (user: Omit<ClippyDokiUser, 'isLoggedIn'>) => Promise<void>;
+type ClipdokiAuthStorageType = BaseStorageType<ClipdokiAuthState> & {
+  login: (user: Omit<ClipdokiUser, 'isLoggedIn'>) => Promise<void>;
   logout: () => Promise<void>;
   checkAuth: () => Promise<boolean>;
 };
 
-const storage = createStorage<ClippyDokiAuthState>(
-  'ClippyDokiState',
+const storage = createStorage<ClipdokiAuthState>(
+  'ClipdokiState',
   {
     user: null,
     isAuthenticated: false,
@@ -31,10 +31,10 @@ const storage = createStorage<ClippyDokiAuthState>(
   },
 );
 
-const ClippyDokiAuthStorage: ClippyDokiAuthStorageType = {
+const ClipdokiAuthStorage: ClipdokiAuthStorageType = {
   ...storage,
-  login: async (userData: Omit<ClippyDokiUser, 'isLoggedIn'>) => {
-    const user: ClippyDokiUser = {
+  login: async (userData: Omit<ClipdokiUser, 'isLoggedIn'>) => {
+    const user: ClipdokiUser = {
       ...userData,
       isLoggedIn: true,
     };
@@ -56,5 +56,5 @@ const ClippyDokiAuthStorage: ClippyDokiAuthStorageType = {
   },
 };
 
-export { ClippyDokiAuthStorage };
-export type { ClippyDokiUser, ClippyDokiAuthState, ClippyDokiAuthStorageType };
+export { ClipdokiAuthStorage };
+export type { ClipdokiUser, ClipdokiAuthState, ClipdokiAuthStorageType };
