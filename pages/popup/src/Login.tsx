@@ -30,6 +30,7 @@ const Login = () => {
       style={{
         width: '100%',
         height: '100%',
+        marginTop: '20px',
       }}>
       {!isLoggedIn ? (
         <div>
@@ -37,15 +38,15 @@ const Login = () => {
             <img
               src={chrome.runtime.getURL('popup/avatar.png')}
               alt="Avatar"
-              className="mb-4 h-16 w-16 rounded-full"
-              style={{ marginTop: '20px' }}
+              className="mb-4 rounded-full"
+              style={{ width: 300, height: 'auto' }}
             />
             <button
               onClick={handleLogin}
               disabled={loading}
               style={{
-                backgroundColor: '#c5361b',
-                color: '#ffedae',
+                backgroundColor: '#D8BBF6',
+                color: '#ffffff',
                 fontFamily: "'VT323', monospace",
                 fontSize: '1rem',
                 padding: '8px 16px',
