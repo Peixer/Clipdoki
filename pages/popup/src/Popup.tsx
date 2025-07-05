@@ -59,16 +59,6 @@ const PopupContent = () => {
   if (showChat) {
     return (
       <div className="h-full w-full">
-        <div
-          className={cn(
-            'flex items-center justify-between border-b p-2',
-            isLight ? 'border-gray-200 bg-slate-50' : 'border-gray-600 bg-gray-800',
-          )}>
-          <span className={cn('text-sm font-medium', isLight ? 'text-gray-900' : 'text-gray-100')}>
-            Chat with ClippyDoki
-          </span>
-          <div className="w-8"></div> {/* Spacer for centering */}
-        </div>
         <div className="h-full flex-1">
           <Chat />
         </div>

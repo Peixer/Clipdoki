@@ -16,9 +16,37 @@ const SYSTEM_PROMPT = `\nVocê é o ClippyDoki, um assistente de hackathon no es
 
 // Classic MSN emoticons
 const emoticons = [
-  '☺', '☻', '♥', '♦', '♣', '♠', '•', '◘', '○', '◙',
-  '♂', '♀', '♪', '♫', '☼', '►', '◄', '↕', '‼', '¶', '§',
-  '▬', '↨', '↑', '↓', '→', '←', '∟', '↔', '▲', '▼',
+  '☺',
+  '☻',
+  '♥',
+  '♦',
+  '♣',
+  '♠',
+  '•',
+  '◘',
+  '○',
+  '◙',
+  '♂',
+  '♀',
+  '♪',
+  '♫',
+  '☼',
+  '►',
+  '◄',
+  '↕',
+  '‼',
+  '¶',
+  '§',
+  '▬',
+  '↨',
+  '↑',
+  '↓',
+  '→',
+  '←',
+  '∟',
+  '↔',
+  '▲',
+  '▼',
 ];
 
 const Chat = () => {
@@ -26,15 +54,15 @@ const Chat = () => {
   const [messages, setMessages] = useState<Message[]>([
     {
       id: '1',
-      content: 'Olá! Qual a ideia do seu projeto para o hackathon? 😃',
+      content: "Hi! What's your project idea for the hackathon? 😃",
       isSent: false,
       timestamp: new Date(),
     },
   ]);
+  const openAiKey = process.env.CEB_OPEN_AI_KEY;
   const [inputMessage, setInputMessage] = useState('');
   const [isTyping, setIsTyping] = useState(false);
   const [isShaking, setIsShaking] = useState(false);
-  const [openAiKey, setOpenAiKey] = useState('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');
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const inputRef = useRef<HTMLInputElement>(null);
 
@@ -78,7 +106,7 @@ const Chat = () => {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
-          'Authorization': `Bearer ${openAiKey}`,
+          Authorization: `Bearer ${openAiKey}`,
         },
         body: JSON.stringify({
           model: 'gpt-3.5-turbo',
@@ -92,11 +120,11 @@ const Chat = () => {
       if (data.choices && data.choices[0] && data.choices[0].message) {
         addMessage(data.choices[0].message.content, false);
       } else {
-        addMessage('Desculpe, não consegui responder agora. 😅', false);
+        addMessage("Sorry, I can't answer that right now. 😅", false);
       }
     } catch (e) {
       setIsTyping(false);
-      addMessage('Erro ao conectar à OpenAI. Verifique sua chave e tente novamente.', false);
+      addMessage("Sorry, I can't answer that right now. 😅", false);
     }
   };
 
@@ -149,9 +177,9 @@ const Chat = () => {
         !isLight && 'dark',
       )}>
       {/* Campo para a chave da OpenAI */}
-    
+
       {/* Title Bar */}
-      <div
+      {/* <div
         className={cn(
           'title-bar border-b px-2 py-1 text-xs font-bold',
           isLight
@@ -159,7 +187,7 @@ const Chat = () => {
             : 'border-gray-500 bg-gradient-to-b from-gray-700 to-gray-600 text-white',
         )}>
         MSN Messenger - Chat with ClippyDoki
-      </div>
+      </div> */}
 
       {/* Chat Header */}
       <div className="flex items-center justify-between border-b border-[#002244] bg-gradient-to-b from-[#003366] via-[#004080] to-[#003366] px-3 py-2 text-xs font-bold text-white">
