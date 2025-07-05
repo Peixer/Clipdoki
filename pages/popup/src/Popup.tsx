@@ -1,5 +1,6 @@
 import '@src/Popup.css';
 import AllSet from './AllSet';
+import Chat from './Chat';
 import { useAuth } from './context/AuthContext';
 import Login from './Login';
 import { t } from '@extension/i18n';
@@ -20,6 +21,7 @@ const PopupContent = () => {
   const { isLoggedIn, currentUser, loading, handleLogout } = useAuth();
   const logo = isLight ? 'popup/logo_vertical.svg' : 'popup/logo_vertical_dark.svg';
   const [isLargeScreen, setIsLargeScreen] = useState(false);
+  const [showChat, setShowChat] = useState(false);
 
   useEffect(() => {
     const checkScreenSize = () => {
@@ -73,6 +75,35 @@ const PopupContent = () => {
     return <AllSet />;
   }
 
+  // Show chat if requested
+  if (showChat) {
+    return (
+      <div className="h-full w-full">
+        <div
+          className={cn(
+            'flex items-center justify-between border-b p-2',
+            isLight ? 'border-gray-200 bg-slate-50' : 'border-gray-600 bg-gray-800',
+          )}>
+          <button
+            onClick={() => setShowChat(false)}
+            className={cn(
+              'rounded px-2 py-1 text-sm hover:scale-105',
+              isLight ? 'bg-gray-200 text-gray-700 hover:bg-gray-300' : 'bg-gray-600 text-white hover:bg-gray-500',
+            )}>
+            ← Back
+          </button>
+          <span className={cn('text-sm font-medium', isLight ? 'text-gray-900' : 'text-gray-100')}>
+            Chat with ClippyDoki
+          </span>
+          <div className="w-8"></div> {/* Spacer for centering */}
+        </div>
+        <div className="h-full flex-1">
+          <Chat />
+        </div>
+      </div>
+    );
+  }
+
   // Show main popup content if authenticated
   return (
     <div className={cn('App', isLight ? 'bg-slate-50' : 'bg-gray-800')}>
@@ -102,6 +133,15 @@ const PopupContent = () => {
           )}
           onClick={injectContentScript}>
           {t('injectButton')}
+        </button>
+
+        <button
+          className={cn(
+            'mt-2 rounded px-4 py-1 font-bold shadow hover:scale-105',
+            isLight ? 'bg-green-200 text-black' : 'bg-green-700 text-white',
+          )}
+          onClick={() => setShowChat(true)}>
+          💬 Chat with ClippyDoki
         </button>
 
         <div className="mt-4 flex gap-2">

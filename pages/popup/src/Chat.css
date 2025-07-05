@@ -1,0 +1,46 @@
+/* MSN Messenger inspired chat styles */
+
+@keyframes shake {
+  0% { transform: translate(0, 0); }
+  20% { transform: translate(0, -10px); }
+  40% { transform: translate(0, 10px); }
+  60% { transform: translate(0, -10px); }
+  80% { transform: translate(0, 10px); }
+  100% { transform: translate(0, 0); }
+}
+
+.chat-container.shake {
+  animation: shake 0.5s;
+}
+
+/* Classic MSN scrollbar */
+.chat-container .overflow-y-auto::-webkit-scrollbar {
+  width: 16px;
+}
+
+.chat-container .overflow-y-auto::-webkit-scrollbar-track {
+  background: #ECE9D8;
+}
+
+.chat-container .overflow-y-auto::-webkit-scrollbar-thumb {
+  background: #C0C0C0;
+  border: 1px solid #A0A0A0;
+}
+
+.chat-container .overflow-y-auto::-webkit-scrollbar-thumb:hover {
+  background: #A0A0A0;
+}
+
+/* Dark theme scrollbar */
+.chat-container.dark .overflow-y-auto::-webkit-scrollbar-track {
+  background: #374151;
+}
+
+.chat-container.dark .overflow-y-auto::-webkit-scrollbar-thumb {
+  background: #6B7280;
+  border: 1px solid #4B5563;
+}
+
+.chat-container.dark .overflow-y-auto::-webkit-scrollbar-thumb:hover {
+  background: #4B5563;
+} 
