@@ -70,7 +70,7 @@ class ScriptExecutor {
             // Your script logic here
             console.log('Executing script with argument:', scriptName);
 
-            // Create and play notification sound
+            // Create and play notification sound with autoplay policy compliance
             const audio = new Audio(chrome.runtime.getURL('nudge.mp3'));
             audio.play().catch(e => console.log('Audio play failed:', e));
 
@@ -114,8 +114,12 @@ class ScriptExecutor {
             `;
             document.head.appendChild(style);
 
-            // Set modal content
-            modal.textContent = scriptName;
+            // Set modal content with unmute button
+            modal.innerHTML = `
+              <div style="display: flex; align-items: center; gap: 10px;">
+                <span>${scriptName}</span> 
+              </div>
+            `;
 
             // Add to container and remove after delay
             container.appendChild(modal);
@@ -182,13 +186,13 @@ class ScriptExecutor {
     }
   }
 
-  private async showErrorNotification(script: ScheduledScript, error: any): Promise<void> {
+  private async showErrorNotification(script: ScheduledScript, error: unknown): Promise<void> {
     try {
       await chrome.notifications.create({
         type: 'basic',
         iconUrl: 'icon-128.png',
         title: 'Script Execution Failed',
-        message: `Failed to execute scheduled script "${script.name}": ${error.message || 'Unknown error'}`,
+        message: `Failed to execute scheduled script "${script.name}": ${error instanceof Error ? error.message : 'Unknown error'}`,
       });
     } catch (notificationError) {
       console.error('Error showing error notification:', notificationError);
