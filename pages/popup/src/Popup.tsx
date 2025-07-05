@@ -6,7 +6,7 @@ import Login from './Login';
 import { t } from '@extension/i18n';
 import { PROJECT_URL_OBJECT, useStorage, withErrorBoundary, withSuspense } from '@extension/shared';
 import { exampleThemeStorage } from '@extension/storage';
-import { cn, ErrorDisplay, LoadingSpinner, ToggleButton } from '@extension/ui';
+import { cn, ErrorDisplay, LoadingSpinner } from '@extension/ui';
 import { useState, useEffect } from 'react';
 
 const notificationOptions = {
@@ -40,26 +40,6 @@ const PopupContent = () => {
 
   const goGithubSite = () => chrome.tabs.create(PROJECT_URL_OBJECT);
 
-  const injectContentScript = async () => {
-    const [tab] = await chrome.tabs.query({ currentWindow: true, active: true });
-
-    if (tab.url!.startsWith('about:') || tab.url!.startsWith('chrome:')) {
-      chrome.notifications.create('inject-error', notificationOptions);
-    }
-
-    await chrome.scripting
-      .executeScript({
-        target: { tabId: tab.id! },
-        files: ['/content-runtime/example.iife.js', '/content-runtime/all.iife.js'],
-      })
-      .catch(err => {
-        // Handling errors related to other paths
-        if (err.message.includes('Cannot access a chrome:// URL')) {
-          chrome.notifications.create('inject-error', notificationOptions);
-        }
-      });
-  };
-
   // Show loading while checking authentication
   if (loading) {
     return <LoadingSpinner />;
@@ -84,14 +64,6 @@ const PopupContent = () => {
             'flex items-center justify-between border-b p-2',
             isLight ? 'border-gray-200 bg-slate-50' : 'border-gray-600 bg-gray-800',
           )}>
-          <button
-            onClick={() => setShowChat(false)}
-            className={cn(
-              'rounded px-2 py-1 text-sm hover:scale-105',
-              isLight ? 'bg-gray-200 text-gray-700 hover:bg-gray-300' : 'bg-gray-600 text-white hover:bg-gray-500',
-            )}>
-            ← Back
-          </button>
           <span className={cn('text-sm font-medium', isLight ? 'text-gray-900' : 'text-gray-100')}>
             Chat with ClippyDoki
           </span>
@@ -114,7 +86,7 @@ const PopupContent = () => {
 
         {/* Welcome message with user info */}
         <div className="mb-4 text-center">
-          <p className="text-lg font-semibold">{t('welcomeUser', [currentUser?.name || 'User'])}</p>
+          <p className="text-lg font-semibold">Welcome, {currentUser?.name}!</p>
           <p className="text-sm opacity-75">{currentUser?.email}</p>
           <button
             className={cn(
@@ -128,25 +100,12 @@ const PopupContent = () => {
 
         <button
           className={cn(
-            'mt-4 rounded px-4 py-1 font-bold shadow hover:scale-105',
-            isLight ? 'bg-blue-200 text-black' : 'bg-gray-700 text-white',
-          )}
-          onClick={injectContentScript}>
-          {t('injectButton')}
-        </button>
-
-        <button
-          className={cn(
             'mt-2 rounded px-4 py-1 font-bold shadow hover:scale-105',
             isLight ? 'bg-green-200 text-black' : 'bg-green-700 text-white',
           )}
           onClick={() => setShowChat(true)}>
           💬 Chat with ClippyDoki
         </button>
-
-        <div className="mt-4 flex gap-2">
-          <ToggleButton>{t('toggleTheme')}</ToggleButton>
-        </div>
       </header>
     </div>
   );
