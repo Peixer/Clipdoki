@@ -31,8 +31,7 @@ const manifest = {
   version: packageJson.version,
   description: '__MSG_extensionDescription__',
   host_permissions: ['<all_urls>'],
-  permissions: ['storage', 'scripting', 'tabs', 'notifications', 'sidePanel'],
-  options_page: 'options/index.html',
+  permissions: ['storage', 'scripting', 'tabs', 'notifications'],
   background: {
     service_worker: 'background.js',
     type: 'module',
@@ -69,16 +68,12 @@ const manifest = {
       css: ['content.css'],
     },
   ],
-  devtools_page: 'devtools/index.html',
   web_accessible_resources: [
     {
       resources: ['*.js', '*.css', '*.svg', 'icon-128.png', 'icon-34.png'],
       matches: ['*://*/*'],
     },
   ],
-  side_panel: {
-    default_path: 'side-panel/index.html',
-  },
 } satisfies ManifestType;
 
 export default manifest;
