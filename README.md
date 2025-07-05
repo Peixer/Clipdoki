@@ -1,15 +1,20 @@
 
-# 📎 Clipdoki
+<div align="center">
+  <h1 align="center">
+    <img src="https://github.com/Peixer/Clipdoki/blob/main/clipdoki.png" width="200" />
+  </h1> 
+  <h3>◦ Clipdoki. Your AI Mentor.</h3>
+</div>
 
 ## 🧠 Problem
 Hackathons are intense, fast-paced, and exciting, but they can also be overwhelming, especially when working solo or with a team. Participants often struggle to manage time, maintain focus, and balance creativity with execution. Without a clear structure or timeline, many projects fail to reach a viable demo within the first 24 hours—the critical moment for impressing judges or collaborators.
 
 ## But What if You Could Have a Personal Assistant 🧑‍💻
-Clipdoki is a Chrome extension that acts as your personal guide, ensuring that you stay on track during a 36-hour hackathon. With structured phases, timely reminders, and motivational content, ClippyDoki will help you break through the chaos and ship something you’re proud of.
+Clipdoki is a Chrome extension that acts as your personal guide, ensuring that you stay on track during a 36-hour hackathon. With structured phases, timely reminders, and motivational content, Clipdoki will help you break through the chaos and ship something you’re proud of.
 
 ## 🎯 Solution: How It Works
 
-### **1. Chrome Extension Setup**
+1. Chrome Extension Setup
 The journey begins with installing ClippyDoki—your virtual hackathon mentor. Upon installation, you’ll be guided to define your project and confirm your timeline, agreeing to a pre-set development structure designed for success.
 
 ### **2. Define Your Idea 💡**
@@ -20,7 +25,7 @@ After installing Clipdoki, you’ll be prompted to input your project idea. This
 
 Once you submit your idea, Clipdoki will mint an NFT that serves as proof of your intention. It’s like a digital certificate for your hackathon journey.
 
-### **3. Three Phases of Focused Development**
+3. Three Phases of Focused Development
 ClippyDoki helps you break the 36-hour hackathon into manageable phases. Each phase is clearly defined, and you’ll receive alerts when it’s time to switch gears. Here's how the 36 hours break down:
 
 **Phase 1: Ideation & Scope (20% - 7.2 Hours)**
