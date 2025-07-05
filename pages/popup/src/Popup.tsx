@@ -68,10 +68,10 @@ const PopupContent = () => {
 
   // Show main popup content if authenticated
   return (
-    <div className={cn('App', isLight ? 'bg-slate-50' : 'bg-gray-800')}>
-      <header className={cn('App-header', isLight ? 'text-gray-900' : 'text-gray-100')}>
+    <div className={cn('App')}>
+      <header className={cn('App-header')}>
         <button onClick={goGithubSite}>
-          <img src={chrome.runtime.getURL(logo)} className="App-logo" alt="logo" />
+          <img src={chrome.runtime.getURL('popup/avatar.png')} className="App-logo" alt="logo" />
         </button>
 
         {/* Welcome message with user info */}

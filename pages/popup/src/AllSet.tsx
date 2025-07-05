@@ -8,16 +8,14 @@ const AllSet = () => (
       flexDirection: 'column',
       alignItems: 'center',
       justifyContent: 'center',
-      height: '80vh',
-      background: '#ffedae',
+      height: '100%',
       fontFamily: "'VT323', monospace",
       textAlign: 'center',
-      color: '#5c4435',
       gap: 0,
     }}>
     {/* Imagem do Tamagotchi */}
     <img
-      src={chrome.runtime.getURL('popup/logo_vertical.svg')}
+      src={chrome.runtime.getURL('popup/avatar.png')}
       alt="You're all set"
       style={{
         width: 300,
