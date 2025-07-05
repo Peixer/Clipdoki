@@ -1,0 +1,16 @@
+{
+  "$schema": "https://json.schemastore.org/tsconfig",
+  "display": "Cadence Tests",
+  "extends": "../../packages/tsconfig/base.json",
+  "compilerOptions": {
+    "noEmit": true,
+    "module": "ESNext",
+    "moduleResolution": "bundler",
+    "target": "ESNext",
+    "lib": ["ESNext"],
+    "types": ["node"]
+  },
+  "include": ["./**/*.ts", "*.ts"],
+  "exclude": ["node_modules"],
+  "files": ["./nft-test.ts", "./run-test.ts"]
+} 

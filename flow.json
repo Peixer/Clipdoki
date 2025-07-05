@@ -1,0 +1,34 @@
+{
+	"emulators": {
+		"default": {
+			"port": 3569,
+			"serviceAccount": "emulator-account"
+		}
+	},
+	"contracts": {
+		"HackathonNFTCollection": "./cadence/contracts/HackathonNFTCollection.cdc"
+	},
+	"networks": {
+		"testnet": "access.devnet.nodes.onflow.org:9000", 
+		"emulator": "127.0.0.1:3569"
+	},
+	"accounts": { 
+		"emulator-account": {
+			"address": "f8d6e0586b0a20c7",
+			"key": {
+				"type": "hex",
+				"index": 0,
+				"signatureAlgorithm": "ECDSA_secp256k1",
+				"hashAlgorithm": "SHA2_256",
+				"privateKey": "39dbc807732235567e28598c64a402af177c0136031caf54f31c7fabd502b04b"
+			}
+		}
+	},
+	"deployments": { 
+		"emulator": {
+			"emulator-account": [
+				"HackathonNFTCollection" 
+			]
+		}
+	}
+}
